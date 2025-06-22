@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+module Views
+  module AdminUsers
+    class Form < ApplicationForm
+      def initialize(attributes = {})
+        @attributes = attributes
+      end
+
+      def process_params(params)
+        params.permit(:test).to_h
+      end
+    end
+  end
+end 
