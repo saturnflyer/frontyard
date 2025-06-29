@@ -1,0 +1,46 @@
+config_version = "0"
+
+[[source]]
+name = "default"
+default = true
+
+# Ruby-specific plugins
+[[plugin]]
+name = "standardrb"
+
+# Documentation and formatting
+[[plugin]]
+name = "markdownlint"
+version = "0.31.1"
+
+# Security and vulnerability scanning
+[[plugin]]
+name = "trivy"
+
+[[plugin]]
+name = "trufflehog"
+
+# Infrastructure and CI/CD
+[[plugin]]
+name = "actionlint"
+
+[[plugin]]
+name = "yamllint"
+
+# Optional: Code formatting (can conflict with StandardRb)
+# [[plugin]]
+# name = "prettier"
+# version = "2.8.4"
+
+# Optional: Infrastructure scanning (if you have IaC files)
+# [[plugin]]
+# name = "checkov"
+# version = "3.2.49"
+
+# Optional: OSV scanning for dependencies
+# [[plugin]]
+# name = "osv-scanner"
+
+# Optional: Text search (useful for finding patterns)
+# [[plugin]]
+# name = "ripgrep"

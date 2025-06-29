@@ -1,0 +1,22 @@
+---
+# StandardRb configuration for QLTY integration
+# This file configures StandardRb linting rules
+
+# Ignore certain files and directories
+ignore:
+  - "test/dummy/**/*"
+  - "vendor/**/*"
+  - "node_modules/**/*"
+  - "coverage/**/*"
+  - "tmp/**/*"
+  - "log/**/*"
+  - "storage/**/*"
+
+# Ruby version to target
+ruby_version: "3.4"
+
+# Additional rules can be added here if needed
+# For example:
+# rules:
+#   Layout/LineLength:
+#     Max: 120

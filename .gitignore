@@ -9,3 +9,7 @@
 /test/dummy/storage/
 /test/dummy/tmp/
 /coverage/
+
+# QLTY artifacts
+.qlty/*
+!.qlty/qlty.toml
