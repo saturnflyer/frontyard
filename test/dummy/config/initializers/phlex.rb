@@ -8,4 +8,9 @@ module Components
 end
 
 Rails.autoloaders.main.push_dir("#{Rails.root}/app/views", namespace: Views)
-Rails.autoloaders.main.push_dir("#{Rails.root}/app/components", namespace: Components)
+
+# Only push components directory if it exists and contains files
+components_dir = "#{Rails.root}/app/components"
+if Dir.exist?(components_dir) && !Dir.empty?(components_dir)
+  Rails.autoloaders.main.push_dir(components_dir, namespace: Components)
+end
