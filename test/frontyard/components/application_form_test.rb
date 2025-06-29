@@ -1,20 +1,5 @@
 require "test_helper"
 
-# Simple buffer for testing Phlex components
-class TestBuffer
-  def initialize
-    @output = +""
-  end
-  
-  def <<(content)
-    @output << content
-  end
-  
-  def to_s
-    @output
-  end
-end
-
 # Test controller to simulate real form processing
 class TestEventsController < ActionController::Base
   include Frontyard::Controller

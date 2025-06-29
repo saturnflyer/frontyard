@@ -61,7 +61,10 @@ describe Frontyard::ApplicationTable do
         table.render_row(data: "test")
       end
       
-      assert_includes error.message, "undefined method `buffer' for nil"
+      # Handle both single quote and backtick formats in error messages
+      assert_includes error.message, "undefined method"
+      assert_includes error.message, "buffer"
+      assert_includes error.message, "nil"
     end
 
     it "works with different data types" do

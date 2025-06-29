@@ -59,21 +59,6 @@ class TestComponentWithTable < Frontyard::ApplicationComponent
   end
 end
 
-# Simple buffer for testing Phlex components
-class TestBuffer
-  def initialize
-    @output = +""
-  end
-  
-  def <<(content)
-    @output << content
-  end
-  
-  def to_s
-    @output
-  end
-end
-
 describe Frontyard::ApplicationComponent do
   describe ".default_config" do
     it "returns a config object" do

@@ -43,3 +43,18 @@ class ActionDispatch::IntegrationTest
     load Rails.root.join("config", "routes.rb")
   end
 end
+
+# Simple buffer for testing Phlex components
+class TestBuffer
+  def initialize
+    @output = +""
+  end
+
+  def <<(content)
+    @output << content
+  end
+
+  def to_s
+    @output
+  end
+end
