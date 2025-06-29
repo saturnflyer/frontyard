@@ -24,4 +24,4 @@ module Frontyard
       button(text, object, **options)
     end
   end
-end 
+end

@@ -49,7 +49,7 @@ end
 
 describe Frontyard::Actions do
   let(:component) { Frontyard::Actions.new }
-  
+
   it "has the correct css class" do
     buffer = +""
     component.call(buffer)
@@ -62,27 +62,27 @@ describe Frontyard::Actions do
       buffer = +""
       DefaultActionsTestComponent.new.call(buffer)
       result = buffer
-      
+
       assert_includes result, 'class="frontyard-actions default-actions-test-component"'
-      
+
       assert_includes result, 'type="submit"'
-      assert_includes result, 'Submit'
+      assert_includes result, "Submit"
       assert_includes result, 'type="cancel"'
-      assert_includes result, 'Cancel'
+      assert_includes result, "Cancel"
     end
 
     it "renders all three default buttons in correct order" do
       buffer = +""
       DefaultActionsTestComponent.new.call(buffer)
       result = buffer
-      
+
       # Check that all three buttons are present
       submit_index = result.index('type="submit"')
       cancel_index = result.index('type="cancel"')
-      
+
       assert submit_index, "Submit button should be present"
       assert cancel_index, "Cancel button should be present"
-      
+
       # Check order: Submit, Cancel
       assert submit_index < cancel_index, "Submit should come before Cancel"
     end
@@ -93,32 +93,32 @@ describe Frontyard::Actions do
       buffer = +""
       CustomActionsTestComponent.new.call(buffer)
       result = buffer
-      
+
       assert_includes result, 'class="custom-actions"'
-      
+
       assert_includes result, 'type="submit"'
       assert_includes result, 'class="btn-primary"'
-      assert_includes result, 'Save'
+      assert_includes result, "Save"
       assert_includes result, 'type="button"'
       assert_includes result, 'class="btn-secondary"'
-      assert_includes result, 'Preview'
-      
+      assert_includes result, "Preview"
+
       # Should NOT render default buttons
-      refute_includes result, 'Reset'
-      refute_includes result, 'Cancel'
+      refute_includes result, "Reset"
+      refute_includes result, "Cancel"
     end
 
     it "renders custom buttons in the order provided in block" do
       buffer = +""
       CustomActionsTestComponent.new.call(buffer)
       result = buffer
-      
-      save_index = result.index('Save')
-      preview_index = result.index('Preview')
-      
+
+      save_index = result.index("Save")
+      preview_index = result.index("Preview")
+
       assert save_index, "Save button should be present"
       assert preview_index, "Preview button should be present"
-      
+
       # Check order: Save, Preview
       assert save_index < preview_index, "Save should come before Preview"
     end
@@ -129,16 +129,16 @@ describe Frontyard::Actions do
       buffer = +""
       MixedActionsTestComponent.new.call(buffer)
       result = buffer
-      
+
       assert_includes result, 'class="frontyard-actions mixed-actions-test-component"'
-      
-      assert_includes result, 'Create'
-      assert_includes result, 'Clear'
-      
+
+      assert_includes result, "Create"
+      assert_includes result, "Clear"
+
       # Should NOT render default buttons (block takes precedence)
-      refute_includes result, 'Submit'
-      refute_includes result, 'Reset'
-      refute_includes result, 'Cancel'
+      refute_includes result, "Submit"
+      refute_includes result, "Reset"
+      refute_includes result, "Cancel"
     end
   end
 
@@ -147,25 +147,25 @@ describe Frontyard::Actions do
       buffer = +""
       DefaultActionsTestComponent.new.call(buffer)
       result = buffer
-      
+
       # Should start with a div with frontyard-actions class
-      assert_match /<div class="frontyard-actions default-actions-test-component">/, result
-      
+      assert_match(/<div class="frontyard-actions default-actions-test-component">/, result)
+
       # Should contain button elements
-      assert_includes result, '<button'
-      assert_includes result, '</button>'
-      
+      assert_includes result, "<button"
+      assert_includes result, "</button>"
+
       # Should end with closing div
-      assert_includes result, '</div>'
+      assert_includes result, "</div>"
     end
 
     it "renders buttons with proper attributes" do
       buffer = +""
       DefaultActionsTestComponent.new.call(buffer)
       result = buffer
-      
-      assert_match /<button[^>]*type="submit"[^>]*>Submit<\/button>/, result
-      assert_match /<button[^>]*type="cancel"[^>]*>Cancel<\/button>/, result
+
+      assert_match(/<button[^>]*type="submit"[^>]*>Submit<\/button>/, result)
+      assert_match(/<button[^>]*type="cancel"[^>]*>Cancel<\/button>/, result)
     end
   end
 
@@ -174,7 +174,7 @@ describe Frontyard::Actions do
       buffer = +""
       DefaultActionsTestComponent.new.call(buffer)
       result = buffer
-      
+
       assert_includes result, 'type="submit"'
       assert_includes result, 'type="cancel"'
     end
@@ -193,10 +193,10 @@ describe Frontyard::Actions do
       buffer = +""
       Frontyard::Actions.new.call(buffer)
       result = buffer
-      
+
       assert_includes result, 'class="frontyard-actions"'
-      assert_includes result, 'Submit'
-      assert_includes result, 'Cancel'
+      assert_includes result, "Submit"
+      assert_includes result, "Cancel"
     end
   end
 
@@ -205,21 +205,21 @@ describe Frontyard::Actions do
       buffer = +""
       EmptyBlockActionsTestComponent.new.call(buffer)
       result = buffer
-      
+
       assert_includes result, 'class="frontyard-actions empty-block-actions-test-component"'
-      assert_match /<div class="frontyard-actions empty-block-actions-test-component"><\/div>/, result
+      assert_match(/<div class="frontyard-actions empty-block-actions-test-component"><\/div>/, result)
     end
 
     it "handles multiple buttons in block" do
       buffer = +""
       MultipleButtonsActionsTestComponent.new.call(buffer)
       result = buffer
-      
-      assert_includes result, 'Save'
-      assert_includes result, 'Cancel'
-      assert_includes result, 'Delete'
-      refute_includes result, 'Submit'
-      refute_includes result, 'Reset'
+
+      assert_includes result, "Save"
+      assert_includes result, "Cancel"
+      assert_includes result, "Delete"
+      refute_includes result, "Submit"
+      refute_includes result, "Reset"
     end
   end
-end 
+end

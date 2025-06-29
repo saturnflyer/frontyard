@@ -43,12 +43,12 @@ module FrontyardControllerTest
       item1 = Object.new
       item1.define_singleton_method(:id) { 1 }
       item1.define_singleton_method(:name) { "Item 1" }
-      
+
       item2 = Object.new
       item2.define_singleton_method(:id) { 2 }
       item2.define_singleton_method(:name) { "Item 2" }
-      
+
       [item1, item2]
     end
   end
-end 
+end

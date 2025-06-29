@@ -56,4 +56,4 @@ module Frontyard
       assert_equal Views::Test::Form, controller.form
     end
   end
-end 
+end

@@ -54,4 +54,4 @@ class EdgeCaseController < ApplicationController
     resource.define_singleton_method(:name) { "Test Resource" }
     resource
   end
-end 
+end

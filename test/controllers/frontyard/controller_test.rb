@@ -66,4 +66,4 @@ class FrontyardControllerIntegrationTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_includes response.body, "Index view with 2 items"
   end
-end 
+end

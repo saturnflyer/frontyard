@@ -23,13 +23,13 @@ module Dummy
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
-    
+
     # Only use the memory store
     config.cache_store = :memory_store
-    
+
     # Enable logging to STDOUT in test mode
     if Rails.env.test?
-      config.logger = Logger.new(STDOUT)
+      config.logger = Logger.new($stdout)
       config.log_level = :error
     end
   end

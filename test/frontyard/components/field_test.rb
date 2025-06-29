@@ -16,6 +16,28 @@ class TestField < Frontyard::Field
   end
 end
 
+# Test components defined at module level to avoid constant definition in block
+class CustomField < Frontyard::Field
+  def view_template
+    super do
+      div(class: "custom-field") do
+        span { "Custom Label" }
+        span { "Custom Input" }
+      end
+    end
+  end
+end
+
+class FormContainer < Frontyard::ApplicationComponent
+  def view_template
+    super do
+      div(class: "form-container") do
+        span { "Form Container" }
+      end
+    end
+  end
+end
+
 describe Frontyard::Field do
   describe "inheritance" do
     it "inherits from ApplicationComponent" do
@@ -77,17 +99,17 @@ describe Frontyard::Field do
 
       assert_includes result, '<div class="frontyard-field">'
       assert_includes result, '<div class="field-container">'
-      assert_includes result, 'Field Content'
+      assert_includes result, "Field Content"
     end
   end
 
   describe "module inclusion verification" do
     it "has all required Phlex::Rails::Helpers modules" do
       field = TestField.new(object: "test", attribute: "to_s")
-      
+
       # Check that the field includes all the expected helper modules
       included_modules = field.class.included_modules.map(&:to_s)
-      
+
       assert_includes included_modules, "Phlex::Rails::Helpers::FormWith"
       assert_includes included_modules, "Phlex::Rails::Helpers::Label"
       assert_includes included_modules, "Phlex::Rails::Helpers::Pluralize"
@@ -102,47 +124,26 @@ describe Frontyard::Field do
 
   describe "component structure" do
     it "can be extended with custom functionality" do
-      class CustomField < Frontyard::Field
-        def view_template
-          super do
-            div(class: "custom-field") do
-              span { "Custom Label" }
-              span { "Custom Input" }
-            end
-          end
-        end
-      end
-
       field = CustomField.new(object: "test", attribute: "to_s")
       buffer = TestBuffer.new
       field.call(buffer)
       result = buffer.to_s
 
       assert_includes result, '<div class="custom-field">'
-      assert_includes result, '<span>Custom Label</span>'
-      assert_includes result, '<span>Custom Input</span>'
+      assert_includes result, "<span>Custom Label</span>"
+      assert_includes result, "<span>Custom Input</span>"
     end
   end
 
   describe "integration with other components" do
     it "can be used within other Frontyard components" do
-      class FormContainer < Frontyard::ApplicationComponent
-        def view_template
-          super do
-            div(class: "form-container") do
-              span { "Form Container" }
-            end
-          end
-        end
-      end
-
       container = FormContainer.new
       buffer = TestBuffer.new
       container.call(buffer)
       result = buffer.to_s
 
       assert_includes result, '<div class="form-container">'
-      assert_includes result, '<span>Form Container</span>'
+      assert_includes result, "<span>Form Container</span>"
     end
   end
-end 
+end

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
   # Test routes for Frontyard controller tests
   resources :test, only: [:index, :show, :new, :edit, :create, :update, :destroy]
-  
+
   # Edge case routes (RESTful + custom collection actions)
   resources :edge_case, only: [:index, :show] do
     collection do
@@ -20,11 +20,11 @@ Rails.application.routes.draw do
       get :form_params
     end
   end
-  
+
   # Form test routes
   get "users/form_test"
   get "admin_users/form_test"
-  
+
   # Test events route for application form tests
   post "test_events", to: "test_events#create"
 

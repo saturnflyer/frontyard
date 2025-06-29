@@ -53,7 +53,7 @@ end
 
 describe Frontyard::Fields do
   let(:component) { Frontyard::Fields.new }
-  
+
   it "renders text field with default type" do
     rendered = TextFieldTestComponent.new.call
     assert_includes rendered, 'type="text"'
@@ -116,4 +116,4 @@ describe Frontyard::Fields do
     assert_includes rendered, "<input"
     assert_includes rendered, "</label>"
   end
-end 
+end

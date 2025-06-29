@@ -1,23 +1,55 @@
+# Test components defined at module level to avoid constant definition in block
+module Frontyard
+  class NestedTestComponent < ApplicationComponent; end
+
+  class SpecialComponent < ApplicationComponent; end
+end
+
 require "test_helper"
 
 module Frontyard
   class Widget; end
+
   class CustomWidget; end
+
   class WidgetsTable < Frontyard::ApplicationComponent
-    def initialize(data:); @data = data; end
-    def view_template; super { h1 { "Table with #{@data}" } }; end
+    def initialize(data:)
+      @data = data
+    end
+
+    def view_template
+      super { h1 { "Table with #{@data}" } }
+    end
   end
+
   class TestTable < Frontyard::ApplicationComponent
-    def initialize(data:); @data = data; end
-    def view_template; super { h1 { "Default Table" } }; end
+    def initialize(data:)
+      @data = data
+    end
+
+    def view_template
+      super { h1 { "Default Table" } }
+    end
   end
+
   class CustomWidgetComponent < Frontyard::ApplicationComponent
-    def initialize(widget:); @widget = widget; end
-    def view_template; super { h1 { "Custom #{@widget.class.name}" } }; end
+    def initialize(widget:)
+      @widget = widget
+    end
+
+    def view_template
+      super { h1 { "Custom #{@widget.class.name}" } }
+    end
   end
+
   class WidgetsComponent < Frontyard::ApplicationComponent
-    def initialize(widget:); @widget = widget; end
-    def view_template; super { h1 { @widget.class.name } }; end
+    def initialize(widget:)
+      @widget = widget
+    end
+
+    def view_template
+      super { h1 { @widget.class.name } }
+    end
   end
 end
 
@@ -30,8 +62,8 @@ class TestComponent < Frontyard::ApplicationComponent
 end
 
 class TestComponentWithConfig < Frontyard::ApplicationComponent
-  configure class: "custom-class", data: { test: "value" }
-  
+  configure class: "custom-class", data: {test: "value"}
+
   def view_template
     super do
       h1(**self.class.config) { "Configured" }
@@ -82,16 +114,10 @@ describe Frontyard::ApplicationComponent do
     end
 
     it "generates correct CSS class for nested classes" do
-      module Frontyard
-        class NestedTestComponent < ApplicationComponent; end
-      end
       assert_equal "frontyard-nested-test-component", Frontyard::NestedTestComponent.generate_css_class
     end
 
     it "handles Frontyard namespace classes correctly" do
-      module Frontyard
-        class SpecialComponent < ApplicationComponent; end
-      end
       assert_equal "frontyard-special-component", Frontyard::SpecialComponent.generate_css_class
     end
   end
@@ -113,18 +139,18 @@ describe Frontyard::ApplicationComponent do
         initialize_with :title, :content, optional: nil
       end
     end
-    
+
     it "sets up accessors" do
       instance = component_class.new(title: "Hello", content: "World", optional: "Value")
       assert_equal "Hello", instance.title
       assert_equal "World", instance.content
       assert_equal "Value", instance.optional
     end
-    
+
     it "accepts options" do
-      custom_instance = component_class.new(title: "Hello", content: "World", data: { value: 123 })
+      custom_instance = component_class.new(title: "Hello", content: "World", data: {value: 123})
       assert_includes custom_instance.options.keys, :data
-      assert_equal({ value: 123 }, custom_instance.options[:data])
+      assert_equal({value: 123}, custom_instance.options[:data])
     end
 
     it "sets default values for optional parameters" do
@@ -134,13 +160,13 @@ describe Frontyard::ApplicationComponent do
 
     it "handles flash and html_options" do
       instance = component_class.new(
-        title: "Hello", 
+        title: "Hello",
         content: "World",
-        flash: { notice: "Success" },
-        html_options: { class: "custom" }
+        flash: {notice: "Success"},
+        html_options: {class: "custom"}
       )
-      assert_equal({ notice: "Success" }, instance.flash)
-      assert_equal({ class: "custom" }, instance.html_options)
+      assert_equal({notice: "Success"}, instance.flash)
+      assert_equal({class: "custom"}, instance.html_options)
     end
 
     it "allows class-level configuration with blocks" do
@@ -153,9 +179,9 @@ describe Frontyard::ApplicationComponent do
           @initialized_at = Time.now
         end
       end
-      
+
       instance = configured_class.new(title: "Hello", content: "World of Rails")
-      
+
       # The instance should have the additional instance variables set by the block
       assert_equal "HELLO", instance.instance_variable_get(:@processed_title)
       assert_equal 3, instance.instance_variable_get(:@word_count)
@@ -198,7 +224,7 @@ describe Frontyard::ApplicationComponent do
       buffer = TestBuffer.new
       instance.call(buffer)
       html = buffer.to_s
-      assert_includes html, '<h1>Frontyard::Widget</h1>'
+      assert_includes html, "<h1>Frontyard::Widget</h1>"
     end
     it "renders with custom from parameter" do
       component = TestComponentWithModel.new
@@ -241,11 +267,11 @@ describe Frontyard::ApplicationComponent do
   describe "#params" do
     it "delegates to helpers.params" do
       component = TestComponent.new
-      mock_params = { id: 1 }
+      mock_params = {id: 1}
       component.define_singleton_method(:helpers) do
         mock_helpers = Object.new
         def mock_helpers.params
-          { id: 1 }
+          {id: 1}
         end
         mock_helpers
       end
@@ -260,7 +286,7 @@ describe Frontyard::ApplicationComponent do
       component.call(buffer)
       result = buffer.to_s
       assert_includes result, '<div class="test-component">'
-      assert_includes result, '<h1>Hello</h1>'
+      assert_includes result, "<h1>Hello</h1>"
     end
     it "uses configured html options" do
       component = TestComponentWithConfig.new
@@ -292,4 +318,4 @@ describe Frontyard::ApplicationComponent do
       end
     end
   end
-end 
+end

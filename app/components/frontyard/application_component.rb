@@ -15,16 +15,16 @@ module Frontyard
       end
 
       def generate_css_class
-        return "" if self.name == "Frontyard::ApplicationComponent"
-        class_name = self.name
+        return "" if name == "Frontyard::ApplicationComponent"
+        class_name = name
         if class_name.to_s.start_with?("Frontyard::") && class_name.to_s != "Frontyard::ApplicationComponent"
-          return class_name.split("::").map { |part| part.gsub(/([A-Z])/, '-\1').downcase.sub(/^-/, '') }.join("-")
+          return class_name.split("::").map { |part| part.gsub(/([A-Z])/, '-\1').downcase.sub(/^-/, "") }.join("-")
         end
         return "frontyard-component" if class_name.nil? || class_name.start_with?("#<")
-        this_css_class = class_name.split("::").last.gsub(/([A-Z])/, '-\1').downcase.sub(/^-/, '')
+        this_css_class = class_name.split("::").last.gsub(/([A-Z])/, '-\1').downcase.sub(/^-/, "")
         if superclass.respond_to?(:generate_css_class)
           css_class = Contours::StructuredString.new(superclass.generate_css_class)
-          css_class << (this_css_class)
+          css_class << this_css_class
         else
           this_css_class
         end.to_s
@@ -79,7 +79,7 @@ module Frontyard
       accessors = keys + kwargs.keys
       keyword_args = tokens.keys
       ivars = tokens.values
-      
+
       # Include the block code in the initialize method if provided
       block_code = if block_given?
         # Convert the block to a string representation that can be executed
@@ -88,7 +88,7 @@ module Frontyard
       else
         ""
       end
-      
+
       mod.class_eval <<~RUBY, __FILE__, __LINE__ + 1
         def initialize(#{keyword_args.join(", ")}, **options)
           #{ivars.join("\n")}
@@ -105,7 +105,7 @@ module Frontyard
       attr_accessor(*accessors)
       const_set(:Initializer, mod)
       include mod
-      
+
       # Store the block for execution on instances
       @initialize_block = block if block_given?
     end
@@ -115,19 +115,17 @@ module Frontyard
       accepted = klass.instance_method(:initialize).parameters
         .select { |type, _| type == :key || type == :keyreq }
         .map(&:last)
-      kwargs.select { |k, _| accepted.include?(k) }
+      kwargs.slice(*accepted)
     end
 
     # Helper to safely try multiple constant names
     private def safe_const_get(*names)
       names.each do |name|
-        begin
-          return Object.const_get(name)
-        rescue NameError
-          next
-        end
+        return Object.const_get(name)
+      rescue NameError
+        next
       end
-      raise NameError, "None of the constants found: #{names.join(', ')}"
+      raise NameError, "None of the constants found: #{names.join(", ")}"
     end
 
     # Rendere the partials that represent a model
@@ -161,24 +159,22 @@ module Frontyard
       const_names = if from
         base = from.classify
         [base, "#{base}Table"]
-      else
+      elsif self.class.name.include?("::")
         # For top-level classes (no namespace), try Frontyard namespace first
-        if self.class.name.include?("::")
-          namespace = self.class.name.deconstantize
-          [
-            "#{namespace}::Table",
-            "#{namespace}::#{self.class.name.demodulize}Table",
-            "#{self.class.name}Table"
-          ]
-        else
-          # Top-level class, try Frontyard namespace with common table names
-          [
-            "Frontyard::TestTable",
-            "Frontyard::Table",
-            "Frontyard::#{self.class.name}Table",
-            "#{self.class.name}Table"
-          ]
-        end
+        namespace = self.class.name.deconstantize
+        [
+          "#{namespace}::Table",
+          "#{namespace}::#{self.class.name.demodulize}Table",
+          "#{self.class.name}Table"
+        ]
+      else
+        # Top-level class, try Frontyard namespace with common table names
+        [
+          "Frontyard::TestTable",
+          "Frontyard::Table",
+          "Frontyard::#{self.class.name}Table",
+          "#{self.class.name}Table"
+        ]
       end
       klass = safe_const_get(*const_names)
       filtered_kwargs = filter_kwargs_for(klass, kwargs)

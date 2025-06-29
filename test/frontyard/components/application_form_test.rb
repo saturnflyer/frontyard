@@ -7,9 +7,9 @@ class TestEventsController < ActionController::Base
   def create
     # Simulate the form processing that would happen in a real controller
     processed_params = form.process_params(params)
-    
+
     # In a real app, this would be saved to a model
-    render json: { 
+    render json: {
       processed_params: processed_params,
       original_params: params.to_unsafe_h
     }
@@ -35,6 +35,7 @@ class TestEventForm < Frontyard::ApplicationForm
   def self.format_date_parts(*keys, params:)
     Frontyard::ApplicationForm::DateTimeParamTransformer.new(keys: keys, hash: params).call
   end
+  private_class_method :format_date_parts
 end
 
 # Test form class for testing form_actions and field methods
@@ -61,7 +62,7 @@ class ApplicationFormIntegrationTest < ActionDispatch::IntegrationTest
   setup do
     # Set up routes for our test controller
     Rails.application.routes.draw do
-      post '/test_events', to: 'test_events#create'
+      post "/test_events", to: "test_events#create"
     end
   end
 
@@ -86,12 +87,12 @@ class ApplicationFormIntegrationTest < ActionDispatch::IntegrationTest
 
     # Make a POST request to simulate form submission
     post "/test_events", params: params
-    
+
     assert_response :success
-    
+
     # Parse JSON response
     response_data = JSON.parse(response.body)
-    
+
     # The processed_params is serialized as an ISO string, so parse it back to Time
     start_time = Time.parse(response_data["processed_params"])
     assert_kind_of Time, start_time
@@ -114,13 +115,13 @@ class ApplicationFormIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     post "/test_events", params: params
-    
+
     assert_response :success
-    
+
     # Parse JSON response
     response_data = JSON.parse(response.body)
     start_time = Time.parse(response_data["processed_params"])
-    
+
     # Should still create a Time object with defaults for missing parts
     assert_kind_of Time, start_time
     assert_equal 2023, start_time.year
@@ -140,13 +141,13 @@ class ApplicationFormIntegrationTest < ActionDispatch::IntegrationTest
     }
 
     post "/test_events", params: params
-    
+
     assert_response :success
-    
+
     # Parse JSON response
     response_data = JSON.parse(response.body)
     start_time = Time.parse(response_data["processed_params"])
-    
+
     # Should return current time when no parts provided
     assert_kind_of Time, start_time
     assert_in_delta Time.current, start_time, 1.second
@@ -176,20 +177,20 @@ describe Frontyard::ApplicationForm do
       form.call(buffer)
       result = buffer.to_s
       assert_includes result, '<div class="frontyard-actions">'
-      assert_includes result, '<button>Submit</button>'
+      assert_includes result, "<button>Submit</button>"
     end
 
     it "passes kwargs to Actions component" do
       form = TestFormWithActions.new
-      
+
       # Mock the render method to capture the component being rendered
       rendered_component = nil
       form.define_singleton_method(:render) do |comp|
         rendered_component = comp
         ""
       end
-      
-      form.form_actions(class: "custom-actions", data: { test: "value" })
+
+      form.form_actions(class: "custom-actions", data: {test: "value"})
       assert_kind_of Frontyard::Actions, rendered_component
     end
   end
@@ -201,19 +202,19 @@ describe Frontyard::ApplicationForm do
       form.call(buffer)
       result = buffer.to_s
       # The field method should render a Field component
-      assert_includes result, '<div'
+      assert_includes result, "<div"
     end
 
     it "passes arguments to Field component" do
       form = TestFormWithField.new
-      
+
       # Mock the render method to capture the component being rendered
       rendered_component = nil
       form.define_singleton_method(:render) do |comp|
         rendered_component = comp
         ""
       end
-      
+
       form.field(:name, label: "Name", required: true)
       assert_kind_of Frontyard::Field, rendered_component
     end
@@ -231,7 +232,7 @@ describe Frontyard::ApplicationForm do
           "start_time(5i)" => "30"
         }
       }
-      
+
       transformer = Frontyard::ApplicationForm::DateTimeParamTransformer.new(
         keys: [:event, :start_time],
         hash: params
@@ -249,7 +250,7 @@ describe Frontyard::ApplicationForm do
       params = {
         event: {
           "title" => "Test Event",
-          "schedule": {
+          :schedule => {
             "start_time(1i)" => "2023",
             "start_time(2i)" => "10",
             "start_time(3i)" => "15",
@@ -265,7 +266,7 @@ describe Frontyard::ApplicationForm do
         hash: params
       )
       result = transformer.call
-      
+
       assert_kind_of Time, result
       assert_equal 2023, result.year
       assert_equal 10, result.month
@@ -288,7 +289,7 @@ describe Frontyard::ApplicationForm do
         hash: params
       )
       result = transformer.call
-      
+
       assert_kind_of Time, result
       assert_equal 2023, result.year
       assert_equal 10, result.month
@@ -310,7 +311,7 @@ describe Frontyard::ApplicationForm do
         hash: params
       )
       result = transformer.call
-      
+
       assert_kind_of Time, result
       assert_in_delta Time.current, result, 1.second
     end
@@ -330,7 +331,7 @@ describe Frontyard::ApplicationForm do
         hash: params
       )
       result = transformer.call
-      
+
       assert_kind_of Time, result
       assert_equal 2023, result.year
       assert_equal 10, result.month
@@ -351,7 +352,7 @@ describe Frontyard::ApplicationForm do
         hash: params
       )
       transformer.call
-      
+
       # The datetime parameters should be removed from the hash
       refute_includes params[:event], "start_time(1i)"
       refute_includes params[:event], "start_time(2i)"
@@ -367,8 +368,8 @@ describe Frontyard::ApplicationForm do
         }
       }
 
-      custom_converter = ->(year, month, day, hour, minute) { 
-        Time.new(year, month, day, hour, minute, 0, "UTC") 
+      custom_converter = ->(year, month, day, hour, minute) {
+        Time.new(year, month, day, hour, minute, 0, "UTC")
       }
 
       transformer = Frontyard::ApplicationForm::DateTimeParamTransformer.new(
@@ -376,7 +377,7 @@ describe Frontyard::ApplicationForm do
         hash: params
       )
       result = transformer.call(time_converter: custom_converter)
-      
+
       assert_kind_of Time, result
       assert_equal "UTC", result.zone
     end
@@ -384,7 +385,7 @@ describe Frontyard::ApplicationForm do
 
   describe ".process_params" do
     it "returns params unchanged by default" do
-      params = { name: "test", value: 123 }
+      params = {name: "test", value: 123}
       result = Frontyard::ApplicationForm.process_params(params)
       assert_equal params, result
     end
@@ -397,4 +398,4 @@ describe Frontyard::ApplicationForm do
       end
     end
   end
-end 
+end

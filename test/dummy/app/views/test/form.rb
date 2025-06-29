@@ -12,4 +12,4 @@ module Views
       end
     end
   end
-end 
+end

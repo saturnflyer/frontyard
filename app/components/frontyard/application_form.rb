@@ -29,7 +29,7 @@ module Frontyard
         data = keys.reduce(hash) do |memo, key|
           memo[key] ||= {}
         end
-        
+
         values = []
         # Check for both string and symbol keys
         datetime_keys = [
@@ -39,12 +39,12 @@ module Frontyard
           "#{leaf}(4i)", :"#{leaf}(4i)",
           "#{leaf}(5i)", :"#{leaf}(5i)"
         ]
-        
+
         datetime_keys.each_slice(2) do |string_key, symbol_key|
           value = data.delete(string_key) || data.delete(symbol_key)
           values << value if value
         end
-        
+
         # Filter out nil values and provide defaults
         filtered_values = values.compact
         if filtered_values.empty?
@@ -57,7 +57,7 @@ module Frontyard
           day = filtered_values[2] || 1
           hour = filtered_values[3] || 0
           minute = filtered_values[4] || 0
-          
+
           time_converter.call(year, month, day, hour, minute)
         end
       end

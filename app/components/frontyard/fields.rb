@@ -1,7 +1,7 @@
 module Frontyard
   class Fields < Frontyard::ApplicationComponent
     DefaultConfig = Config.init(
-      class: "frontyard-fields",
+      class: "frontyard-fields"
     )
 
     def field(*args, **kwargs, &block)
@@ -32,4 +32,4 @@ module Frontyard
       attrs.compact
     end
   end
-end 
+end

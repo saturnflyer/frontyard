@@ -42,8 +42,8 @@ describe Frontyard do
       component.call(buffer)
       result = buffer.to_s
 
-      assert_includes result, '<div>'
-      assert_includes result, 'Test'
+      assert_includes result, "<div>"
+      assert_includes result, "Test"
     end
 
     it "allows views to inherit from ApplicationView" do
@@ -58,8 +58,8 @@ describe Frontyard do
       view.call(buffer)
       result = buffer.to_s
 
-      assert_includes result, '<div>'
-      assert_includes result, 'View Test'
+      assert_includes result, "<div>"
+      assert_includes result, "View Test"
     end
   end
 
@@ -104,8 +104,8 @@ describe Frontyard do
       result = buffer.to_s
 
       assert_includes result, '<div class="test-component">'
-      assert_includes result, '<h1>Title</h1>'
-      assert_includes result, '<p>Content</p>'
+      assert_includes result, "<h1>Title</h1>"
+      assert_includes result, "<p>Content</p>"
     end
 
     it "renders views with proper HTML structure" do
@@ -124,8 +124,8 @@ describe Frontyard do
       result = buffer.to_s
 
       assert_includes result, '<div class="test-view">'
-      assert_includes result, '<h2>View Title</h2>'
-      assert_includes result, '<p>View Content</p>'
+      assert_includes result, "<h2>View Title</h2>"
+      assert_includes result, "<p>View Content</p>"
     end
   end
-end 
+end

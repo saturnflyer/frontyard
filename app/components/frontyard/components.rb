@@ -4,4 +4,4 @@ module Frontyard
   module Components
     extend Phlex::Kit
   end
-end 
+end

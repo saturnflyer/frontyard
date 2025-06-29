@@ -16,7 +16,7 @@ module Frontyard
       div(**self.class.config) do
         # Use basic HTML label to avoid Rails helper conflicts
         tag(:label) { attribute.to_s.humanize }
-        
+
         case field_type
         when :text
           input(type: "text", name: object_attribute, **field_options)
@@ -36,11 +36,11 @@ module Frontyard
     private
 
     def object_attribute
-      if object && object.respond_to?(:class) && object.class.respond_to?(:name)
+      if object&.class&.respond_to?(:name)
         "#{object.class.name.underscore}[#{attribute}]"
       else
         # Fallback for when object is nil or doesn't have a class name
-        "#{attribute}"
+        attribute.to_s
       end
     end
 
@@ -63,4 +63,4 @@ module Frontyard
       {}
     end
   end
-end 
+end

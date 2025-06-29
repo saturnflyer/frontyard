@@ -3,9 +3,9 @@
 module Views
   module EdgeCase
     class Index < ApplicationView
-      def initialize(test_collection:, flash:, nil_value: nil, symbol_key: nil, string_key: nil, 
-                     string_data: nil, number_data: nil, array_data: nil, hash_data: nil,
-                     true_value: nil, false_value: nil)
+      def initialize(test_collection:, flash:, nil_value: nil, symbol_key: nil, string_key: nil,
+        string_data: nil, number_data: nil, array_data: nil, hash_data: nil,
+        true_value: nil, false_value: nil)
         @test_collection = test_collection
         @flash = flash
         @nil_value = nil_value
@@ -35,7 +35,7 @@ module Views
             div { plain "Number data: #{@number_data}" }
           end
           if @array_data
-            div { plain "Array data: #{@array_data.join(', ')}" }
+            div { plain "Array data: #{@array_data.join(", ")}" }
           end
           if @hash_data
             div { plain "Hash data: #{@hash_data[:key]}" }
@@ -50,4 +50,4 @@ module Views
       end
     end
   end
-end 
+end

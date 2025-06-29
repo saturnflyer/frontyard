@@ -5,4 +5,4 @@ class UsersController < ApplicationController
     form_class = form
     render plain: form_class.name
   end
-end 
+end
