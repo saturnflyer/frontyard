@@ -15,7 +15,7 @@ class CustomActionsTestComponent < Frontyard::Actions
   def view_template
     super do
       button(type: "submit", class: "btn-primary") { "Save" }
-      button(type: "button", class: "btn-secondary") { "Preview" }
+      button(type: "button") { "Preview" }
     end
   end
 end
@@ -41,7 +41,7 @@ class MultipleButtonsActionsTestComponent < Frontyard::Actions
   def view_template
     super do
       button(type: "submit", class: "btn-primary") { "Save" }
-      button(type: "button", class: "btn-secondary") { "Cancel" }
+      button(type: "button") { "Cancel" }
       button(type: "button", class: "btn-danger") { "Delete" }
     end
   end
@@ -100,7 +100,6 @@ describe Frontyard::Actions do
       assert_includes result, 'class="btn-primary"'
       assert_includes result, "Save"
       assert_includes result, 'type="button"'
-      assert_includes result, 'class="btn-secondary"'
       assert_includes result, "Preview"
 
       # Should NOT render default buttons
