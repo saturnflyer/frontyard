@@ -12,7 +12,7 @@ require "reissue/gem"
 require "rake/testtask"
 
 Reissue::Task.create do |t|
-  t.version_file = "frontyard/version.rb"
+  t.version_file = "lib/frontyard/version.rb"
 end
 
 Rake::TestTask.new(:test) do |t|
