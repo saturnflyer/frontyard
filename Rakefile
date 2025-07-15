@@ -11,7 +11,7 @@ require "reissue/gem"
 
 require "rake/testtask"
 
-Reissue::Task.new do |t|
+Reissue::Task.create do |t|
   t.version_file = "frontyard/version.rb"
 end
 
