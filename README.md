@@ -1,9 +1,10 @@
 # Frontyard
 Make it easier to use Phlex views, forms, and components.
 
-Very much work in progress
+Very much work in progress to find some common patterns.
 
 ## Usage
+
 TODO…
 
 ## Installation
