@@ -54,7 +54,7 @@ jobs:
           if-no-files-found: ignore
 
       - name: Coverage Report
-        uses: qltysh/qlty-action/coverage@v1
+        uses: qltysh/qlty-action/coverage@v2
         with:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/.resultset.json
