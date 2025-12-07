@@ -13,6 +13,7 @@ require "rake/testtask"
 
 Reissue::Task.create do |t|
   t.version_file = "lib/frontyard/version.rb"
+  t.fragment = :git
 end
 
 Rake::TestTask.new(:test) do |t|
