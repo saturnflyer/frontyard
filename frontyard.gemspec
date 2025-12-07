@@ -14,6 +14,8 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = "https://github.com/saturnflyer/frontyard"
   spec.metadata["changelog_uri"] = "https://github.com/saturnflyer/frontyard/blob/main/CHANGELOG.md"
 
+  spec.required_ruby_version = ">= 3.4.0"
+
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end

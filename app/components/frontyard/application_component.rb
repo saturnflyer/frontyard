@@ -90,7 +90,7 @@ module Frontyard
       end
 
       mod.class_eval <<~RUBY, __FILE__, __LINE__ + 1
-        def initialize(#{keyword_args.join(", ")}, **options)
+        def initialize(#{keyword_args.join(", ")}, **options, &block)
           #{ivars.join("\n")}
           @flash = options.delete(:flash) || {}
           if options.key?(:html_options)
@@ -181,7 +181,7 @@ module Frontyard
       render klass.new(**filtered_kwargs, &block)
     end
 
-    def params = helpers.params
+    def params = view_context.params
 
     def view_template(&) = div(**html_options, &)
   end

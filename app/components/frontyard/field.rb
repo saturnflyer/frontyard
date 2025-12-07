@@ -15,7 +15,7 @@ module Frontyard
     def view_template(&block)
       div(**self.class.config) do
         # Use basic HTML label to avoid Rails helper conflicts
-        tag(:label) { attribute.to_s.humanize }
+        tag(:label) { options[:label] || attribute.to_s.humanize }
 
         case field_type
         when :text
@@ -59,8 +59,7 @@ module Frontyard
     end
 
     def field_options
-      # Return any additional options for the field
-      {}
+      options[:field_options] || {}
     end
   end
 end
