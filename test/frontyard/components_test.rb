@@ -87,6 +87,21 @@ describe Frontyard do
     end
   end
 
+  describe "initialize_with" do
+    it "accepts string values as defaults" do
+      test_component = Class.new(Frontyard::ApplicationComponent) do
+        initialize_with title: "Default Title"
+
+        def view_template
+          div { title }
+        end
+      end
+
+      component = test_component.new
+      expect(component.title).must_equal "Default Title"
+    end
+  end
+
   describe "component rendering" do
     it "renders components with proper HTML structure" do
       test_component = Class.new(Frontyard::ApplicationComponent) do

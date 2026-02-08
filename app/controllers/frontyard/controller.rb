@@ -1,5 +1,29 @@
 module Frontyard
   module Controller
+    extend ActiveSupport::Concern
+
+    included do
+      layout -> { _resolve_frontyard_layout }
+    end
+
+    class_methods do
+      # Set an explicit Phlex layout class for this controller.
+      #
+      #   frontyard_layout Views::Layouts::AdminLayout
+      #   frontyard_layout false  # disable Phlex layout
+      def frontyard_layout(klass = :__unset__)
+        if klass == :__unset__
+          if defined?(@_frontyard_layout)
+            @_frontyard_layout
+          elsif superclass.respond_to?(:frontyard_layout)
+            superclass.frontyard_layout
+          end
+        else
+          @_frontyard_layout = klass
+        end
+      end
+    end
+
     # Get the form class for the current controller
     def form
       namespace = controller_name.camelize
@@ -34,6 +58,25 @@ module Frontyard
       view_data[:flash] = flash
       render_data = symbolized_kwargs.except(*view_data.keys)
       render klass.new(**view_data), **render_data
+    end
+
+    private
+
+    def _resolve_frontyard_layout
+      # Check for explicit layout set on the controller class
+      explicit = self.class.frontyard_layout
+      if explicit
+        return explicit
+      elsif explicit == false
+        return nil
+      end
+
+      # Convention: look for Views::Layouts::ApplicationLayout
+      begin
+        Views::Layouts::ApplicationLayout
+      rescue NameError
+        nil
+      end
     end
   end
 end

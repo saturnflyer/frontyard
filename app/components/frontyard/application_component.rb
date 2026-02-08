@@ -73,8 +73,7 @@ module Frontyard
         ]
       end.to_h
       kwargs.each do |key, value|
-        value ||= "nil"
-        tokens["#{key}: #{value}"] = "@#{key} = #{key}"
+        tokens["#{key}: #{value.inspect}"] = "@#{key} = #{key}"
       end
       accessors = keys + kwargs.keys
       keyword_args = tokens.keys
