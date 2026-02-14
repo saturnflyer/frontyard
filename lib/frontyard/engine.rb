@@ -5,7 +5,7 @@ module Frontyard
     isolate_namespace Frontyard
 
     initializer "frontyard.controller" do
-      ActiveSupport.on_load(:action_controller) do
+      ActiveSupport.on_load(:action_controller_base) do
         include Frontyard::Controller
       end
     end
