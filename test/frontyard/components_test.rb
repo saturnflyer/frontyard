@@ -17,7 +17,7 @@ describe Frontyard do
     it "can be included in other modules" do
       test_module = Module.new
       test_module.include Frontyard
-      assert test_module.included_modules.include?(Frontyard)
+      assert test_module.include?(Frontyard)
     end
 
     it "provides a namespace for components" do

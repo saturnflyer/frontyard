@@ -162,11 +162,11 @@ describe Frontyard::ApplicationForm do
 
     it "includes necessary Rails helpers" do
       form_class = Frontyard::ApplicationForm
-      assert form_class.included_modules.include?(Phlex::Rails::Helpers::DatetimeField)
-      assert form_class.included_modules.include?(Phlex::Rails::Helpers::FormWith)
-      assert form_class.included_modules.include?(Phlex::Rails::Helpers::Label)
-      assert form_class.included_modules.include?(Phlex::Rails::Helpers::Pluralize)
-      assert form_class.included_modules.include?(Phlex::Rails::Helpers::TextField)
+      assert form_class.include?(Phlex::Rails::Helpers::DatetimeField)
+      assert form_class.include?(Phlex::Rails::Helpers::FormWith)
+      assert form_class.include?(Phlex::Rails::Helpers::Label)
+      assert form_class.include?(Phlex::Rails::Helpers::Pluralize)
+      assert form_class.include?(Phlex::Rails::Helpers::TextField)
     end
   end
 
