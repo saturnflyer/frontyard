@@ -75,8 +75,31 @@ describe Frontyard::Split do
       split.split_side(data: {role: "side"}) { "S" }
     end
 
-    expect(html).must_include %(<div id="page" class="frontyard-split extra" data-controller="x" aria-label="Page">)
-    expect(html).must_include %(<div id="m" class="frontyard-split-main tall">M</div>)
-    expect(html).must_include %(<aside data-role="side" class="frontyard-split-side">S</aside>)
+    expect(html).must_include %(<div class="frontyard-split extra" id="page" data-controller="x" aria-label="Page">)
+    expect(html).must_include %(<div class="frontyard-split-main tall" id="m">M</div>)
+    expect(html).must_include %(<aside class="frontyard-split-side" data-role="side">S</aside>)
+  end
+
+  it "combines pair with a caller class on the root" do
+    html = Frontyard::Split.new(pair: true, class: "extra").call { |s| s.split_main { "M" } }
+
+    expect(html).must_include %(<div class="frontyard-split frontyard-split-pair extra">)
+  end
+
+  it "accepts an array class and attributes on main_after and foot" do
+    html = Frontyard::Split.new.call do |split|
+      split.split_main_after(id: "a", class: ["x", "y"]) { "A" }
+      split.split_foot(data: {k: "v"}) { "F" }
+    end
+
+    expect(html).must_include %(<div class="frontyard-split-main-after x y" id="a">A</div>)
+    expect(html).must_include %(<div class="frontyard-split-foot" data-k="v">F</div>)
+  end
+
+  it "renders no empty class attribute for a blank configured name" do
+    blank = Class.new(Frontyard::Split) { configure_classes root: "" }
+
+    expect(blank.new.call { |s| s.split_main { "M" } }).must_include "<div><div"
+    expect(blank.new(class: "c").call { "" }).must_equal %(<div class="c"></div>)
   end
 end

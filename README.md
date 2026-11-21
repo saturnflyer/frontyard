@@ -50,6 +50,9 @@ class Components::UI::Split < Frontyard::Split
 end
 ```
 
+`configure_classes` snapshots the parent's names at the moment it is called, so
+a parent configured later does not reach a child that is already configured.
+
 ## Installation
 Add this line to your application's Gemfile:
 

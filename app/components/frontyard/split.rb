@@ -15,13 +15,17 @@ module Frontyard
   # The DSL methods keep the `split_` prefix: Phlex already defines `main` and
   # `aside` as HTML elements, and a same-named method would shadow them.
   #
+  # It inherits Phlex::HTML, not Frontyard::ApplicationComponent: a layout
+  # primitive needs none of that class's route/link helpers or its
+  # development-only "Before ..." comment, so adopted markup stays identical.
+  #
   # Class names are configured once per class (subclasses inherit and may
   # override):
   #
   #   class AppSplit < Frontyard::Split
   #     configure_classes root: "split", main: "split-main", side: "split-side"
   #   end
-  class Split < Frontyard::ApplicationComponent
+  class Split < Phlex::HTML
     DEFAULT_CLASSES = {
       root: "frontyard-split",
       pair: "frontyard-split-pair",
@@ -75,8 +79,10 @@ module Frontyard
     private
 
     def tag_attributes(key, modifier, attributes)
-      names = [self.class.classes[key], (self.class.classes[modifier] if modifier), attributes[:class]]
-      attributes.merge(class: names.compact_blank.join(" "))
+      configured = [self.class.classes[key], (self.class.classes[modifier] if modifier)].compact_blank.join(" ")
+      return attributes if configured.empty?
+
+      mix({class: configured}, attributes)
     end
   end
 end
