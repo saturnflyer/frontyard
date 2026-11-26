@@ -9,13 +9,13 @@ module Frontyard
     include Phlex::Rails::Helpers::TextField
 
     def form_actions(**kwargs, &block)
-      render Frontyard::Actions.new(**kwargs, &block)
+      render Frontyard::Actions.new(**kwargs), &block
     end
 
     def field(attribute, **kwargs, &block)
       # Use the form object if available, otherwise use a default object
       form_object = respond_to?(:object) ? object : self
-      render Frontyard::Field.new(object: form_object, attribute: attribute, **kwargs, &block)
+      render Frontyard::Field.new(object: form_object, attribute: attribute, **kwargs), &block
     end
 
     # Default object method - subclasses can override this

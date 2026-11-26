@@ -5,7 +5,7 @@ module Frontyard
     include Phlex::Rails::Helpers::ContentFor
 
     def page_links(&)
-      render PageLinks.new(&)
+      render PageLinks.new, &
     end
 
     def render_form(**)

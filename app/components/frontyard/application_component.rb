@@ -89,14 +89,13 @@ module Frontyard
       end
 
       mod.class_eval <<~RUBY, __FILE__, __LINE__ + 1
-        def initialize(#{keyword_args.join(", ")}, **options, &block)
+        def initialize(#{keyword_args.join(", ")}, **options)
           #{ivars.join("\n")}
           @flash = options.delete(:flash) || {}
           if options.key?(:html_options)
             @html_options = options.delete(:html_options)
           end
           @options = options
-          yield self if block_given?
           #{block_code}
         end
       RUBY
@@ -177,7 +176,7 @@ module Frontyard
       end
       klass = safe_const_get(*const_names)
       filtered_kwargs = filter_kwargs_for(klass, kwargs)
-      render klass.new(**filtered_kwargs, &block)
+      render klass.new(**filtered_kwargs), &block
     end
 
     def params = view_context.params

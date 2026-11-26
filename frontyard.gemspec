@@ -21,6 +21,6 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 8.0.0"
-  spec.add_dependency "phlex-rails", ">= 2.0.2"
+  spec.add_dependency "phlex-rails", ">= 2.0.2", "< 4"
   spec.add_dependency "contours", ">= 0.1.1"
 end

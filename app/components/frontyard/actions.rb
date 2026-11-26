@@ -15,9 +15,9 @@ module Frontyard
       }
     )
 
-    def initialize(**kwargs, &block)
+    def initialize(**kwargs)
       filtered_kwargs = filter_kwargs_for(self.class.superclass, kwargs)
-      super(&block)
+      super()
       @button_config = ButtonConfig.merge(kwargs.except(*filtered_kwargs.keys))
     end
 
