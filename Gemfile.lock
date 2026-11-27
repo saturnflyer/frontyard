@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    frontyard (0.1.5)
+    frontyard (0.1.6)
       contours (>= 0.1.1)
       phlex-rails (>= 2.0.2, < 4)
       rails (>= 8.0.0)
